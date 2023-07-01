@@ -47,12 +47,17 @@ class BardBot:
         data = {"f.req": json.dumps([None, json.dumps(message_struct)]), "at": self.SNlM0e}
         try:
             resp = self.session.post(self.BARD_CHAT_URL, params=params, data=data)
+            print(f'resp.content={resp.content}')
+            #resp_json = json.loads(resp)
+            #print(f'resp={resp_json}')
+
             content = json.loads(resp.content.splitlines()[3])[0][2]
             if not (content := json.loads(resp.content.splitlines()[3])[0][2]):
                 return {"content": f"Bard encountered an error: {resp.content}."} 
             json_data = json.loads(content)
+            print(f'content={content}')
             results = {
-                "content": json_data[0][0],
+                "content": json_data[4][0][1][0],
                 "conversation_id": json_data[1][0],
                 "response_id": json_data[1][1],
                 "reference": json_data[3],

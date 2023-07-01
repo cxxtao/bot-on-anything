@@ -2,6 +2,8 @@
 
 import argparse
 import config
+import threading
+import reloader
 from channel import channel_factory
 from common import log, const
 from multiprocessing import Pool
@@ -67,6 +69,9 @@ def main():
         log.exception(e)
 
 if __name__ == '__main__':
+    # Start the module reloading thread
+    reload_thread = threading.Thread(target=reloader.reload_module, daemon=True)
+    reload_thread.start()
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", help="config.json path(e.g: ./config.json  or  /usr/local/bot-on-anything/config.json)",type=str,default="./config.json")
     args = parser.parse_args()
