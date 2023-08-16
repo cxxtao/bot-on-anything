@@ -13,6 +13,7 @@ class BardModel(Model):
     def __init__(self):
         try:
             self.cookies = model_conf_val("bard", "cookie")
+            print(self.cookies)
             self.bot = BardBot(self.cookies)
         except Exception as e:
             log.warn(e)

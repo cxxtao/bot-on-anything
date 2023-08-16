@@ -5,7 +5,8 @@ import websockets
 import random
 import uuid
 import EdgeGPT
-from EdgeGPT import ChatHubRequest, Chatbot, Conversation, ChatHub
+from EdgeGPT.EdgeGPT import ChatHubRequest, Chatbot, Conversation, ChatHub
+from EdgeGPT import conversation_style
 from typing import Generator
 from config import model_conf_val
 
@@ -46,7 +47,7 @@ class SydneyBot(Chatbot):
     async def ask_stream(
         self,
         prompt: str,
-        conversation_style: EdgeGPT.CONVERSATION_STYLE_TYPE = None,
+        conversation_style: conversation_style.CONVERSATION_STYLE_TYPE = None,
         message_id: str = None
     ) -> dict:
         # 开启新对话
@@ -98,7 +99,7 @@ class SydneyBot(Chatbot):
     async def ask(
         self,
         prompt: str,
-        conversation_style: EdgeGPT.CONVERSATION_STYLE_TYPE = None,
+        conversation_style: conversation_style.CONVERSATION_STYLE_TYPE = None,
         message_id: str = None
     ) -> dict:
         async for final, response in self.ask_stream(
@@ -147,7 +148,7 @@ class SydneyHub(ChatHub):
         self,
         prompt: str,
         wss_link: str = "wss://sydney.bing.com/sydney/ChatHub",
-        conversation_style: EdgeGPT.CONVERSATION_STYLE_TYPE = None,
+        conversation_style: conversation_style.CONVERSATION_STYLE_TYPE = None,
     ) -> Generator[str, None, None]:
         async for item in super().ask_stream(prompt=prompt, conversation_style=conversation_style, wss_link=wss_link):
             yield item
@@ -169,7 +170,7 @@ class SydneyHubRequest(ChatHubRequest):
     def update(
         self,
         prompt: str,
-        conversation_style: EdgeGPT.CONVERSATION_STYLE_TYPE,
+        conversation_style: conversation_style.CONVERSATION_STYLE_TYPE,
         options: list | None = None,
     ) -> None:
         self.invocation_id = 0
